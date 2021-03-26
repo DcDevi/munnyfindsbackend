@@ -48,7 +48,7 @@ export default function BusinessList(props) {
                             </div>
                         </div>
                         <div className="table-responsive product-list">
-                            <table className="table table-bordered table-striped mt-3" id="categoryList">
+                            <table className="table table-bordered table-striped mt-3" id="businesslist">
                                 <thead>
                                     <tr>
                                         <th>Business Name</th>

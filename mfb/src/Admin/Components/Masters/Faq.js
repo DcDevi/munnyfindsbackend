@@ -5,22 +5,18 @@ import Header from "../../Header";
 import Sidebar from "../../Sidebar";
 import Footer from "../../Footer";
 const initialFieldValues = {
-  categoryId: 0,
-  categoryName: "",
-  status: "true",
-  createdDate: new Date().toLocaleString(),
-  updatedDate: new Date().toLocaleString(),
-  businessTypeId: 0,
-  business: "",
-  categoryurl: "",
+  faqId: 0,
+  subjectId: "",
+  subjetName: "",
+  question: "",
+   answer: "",
 };
-export default function CategoryList(props) {
-  const [categoryList, setCategoryList] = useState([]);
-  const [businessType, setBusinessType] = useState([]);
+export default function Fqa(props) {
+  const [faqList, setfaqList] = useState([]);
+  const [faqType, setFaqType] = useState([]);
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [values, setValues] = useState(initialFieldValues);
   const [errors, setErrors] = useState({});
-
   useEffect(() => {
     if (recordForEdit !== null) setValues(recordForEdit);
   }, [recordForEdit]);
@@ -34,8 +30,7 @@ export default function CategoryList(props) {
   };
   const validate = () => {
     let temp = {};
-    temp.categoryName = values.categoryName === "" ? false : true;
-    temp.status = values.status === "0" ? false : true;
+    temp.question = values.question === "" ? false : true;
     setErrors(temp);
     return Object.values(temp).every((x) => x === true);
   };
@@ -43,23 +38,21 @@ export default function CategoryList(props) {
     e.preventDefault();
     if (validate()) {
       const formData = new FormData();
-      formData.append("categoryId", values.categoryId);
-      formData.append("categoryName", values.categoryName);
-      formData.append("createdDate", values.createdDate);
-      formData.append("updatedDate", values.updatedDate);
-      formData.append("businessTypeId", values.businessTypeId);
-      formData.append("business", values.business);
-      formData.append("status", values.status);
-      formData.append("categoryurl", values.categoryurl);
+      formData.append("faqId", values.faqId);
+      formData.append("subjectId", values.subjectId);
+      formData.append("subjetName", values.subjetName);
+      formData.append("question", values.question);
+      formData.append("answer", values.answer);
       console.log(values);
       addOrEdit(formData, resetForm);
     }
   };
-  const applicationAPI = (url = "https://localhost:44313/api/category/") => {
-    console.log(1);
+  const applicationAPI = (
+    url = "https://localhost:44313/api/faq/"
+  ) => {
     return {
-      fetchBusinessType: (id) =>
-        axios.get("https://localhost:44313/api/businesstype/Get/"),
+        fetchSubjectName: (id) =>
+        axios.get("https://localhost:44313/api/subject/get/"),
       fetchAll: () => axios.get(url + "get"),
       create: (newRecord) => axios.post(url + "insert", newRecord),
       update: (id, updateRecord) =>
@@ -68,22 +61,21 @@ export default function CategoryList(props) {
     };
   };
   const addOrEdit = (formData, onSuccess) => {
-    if (formData.get("categoryId") === "0") {
+    if (formData.get("faqId") === "0") {
       applicationAPI()
         .create(formData)
         .then((res) => {
-          console.log(res);
-          //   handleSuccess("New Category Added");
-          //   resetForm();
-          //   refreshCategoryList();
+          handleSuccess("FAQ Added");
+          resetForm();
+          refreshFaqList();
         });
     } else {
       applicationAPI()
-        .update(formData.get("categoryId"), formData)
+        .update(formData.get("faqId"), formData)
         .then((res) => {
-          handleSuccess("Category Details Updated");
+          handleSuccess("FAQ Updated");
           resetForm();
-          refreshCategoryList();
+          refreshFaqList();
         });
     }
   };
@@ -95,30 +87,30 @@ export default function CategoryList(props) {
       applicationAPI()
         .delete(id)
         .then((res) => {
-          handleSuccess("Category Deleted Succesfully");
-          refreshCategoryList();
+          handleSuccess("Business Type Deleted Succesfully");
+          refreshFaqList();
         })
-        .catch((err) => handleError("Category Deleted Failed"));
+        .catch((err) => handleError("Business Type Deleted Failed"));
   };
   const resetForm = () => {
     setValues(initialFieldValues);
   };
-  function refreshCategoryList() {
+  function refreshFaqList() {
     applicationAPI()
       .fetchAll()
-      .then((res) => setCategoryList(res.data))
+      .then((res) => setfaqList(res.data))
       .catch((err) => console.log(err));
   }
-
-  function refreshBusinessType() {
+  function refreshFaqType() {
     applicationAPI()
-      .fetchBusinessType()
-      .then((res) => setBusinessType(res.data))
+      .fetchSubjectName()
+      .then((res) => setFaqType(res.data))
       .catch((err) => console.log(err));
   }
   useEffect(() => {
-    refreshCategoryList();
-    refreshBusinessType();
+    refreshFaqList();
+    refreshFaqType();
+
   }, []);
   const applyErrorClass = (field) =>
     field in errors && errors[field] === false ? " form-control-danger" : "";
@@ -132,58 +124,53 @@ export default function CategoryList(props) {
         <div className="col-sm-9 col-xs-12 content pt-3 pl-0">
           <form onSubmit={handleSubmit} autoComplete="off" noValidate>
             <span className="text-secondary">
-              Dashboard <i className="fa fa-angle-right" /> Category List
+              Dashboard <i className="fa fa-angle-right" /> FAQ
             </span>
             <div className="row mt-3">
               <div className="col-sm-12">
                 <div className="mt-4 mb-3 p-3 button-container bg-white border shadow-sm">
-                  <h6 className="mb-3">Category Details</h6>
+                  <h6 className="mb-3">FAQ</h6>
                   <div className="form-group row floating-label">
-                    <div className="col-sm-4 col-12">
+                  <div className="col-sm-4 col-12">
                       <select
-                        name="businessTypeId"
+                        name="subjectId"
                         type="text"
-                        value={values.businessTypeId}
+                        value={values.subjectId}
                         onChange={handleInputChange}
                         className="form-control"
                       >
                         <option value="0">Please Select</option>
-                        {businessType.map((bus) => (
-                          <option value={bus.businessTypeId}>
-                            {bus.business}
+                        {faqType.map((bus) => (
+                          <option value={bus.subjectId}>
+                            {bus.subjectName}
                           </option>
                         ))}
                       </select>
-                      <label htmlFor="business">BusinessType</label>
+                      <label htmlFor="subjectName">Subject</label>
                     </div>
-
                     <div className="col-sm-4 col-12">
                       <input
-                        className={
-                          "form-control" + applyErrorClass("categoryName")
-                        }
-                        name="categoryName"
+                        className={"form-control" + applyErrorClass("question")}
+                        name="question"
                         type="text"
-                        value={values.categoryName}
+                        value={values.question}
                         onChange={handleInputChange}
                       />
-                      <label htmlFor="categoryName">Category Name</label>
+                      <label htmlFor="question">Question</label>
                     </div>
-                    <div className="col-sm-4">
-                      <select
-                        value={values.status}
+                  <div className="col-sm-4 col-12">
+                      <input
+                        className={"form-control" + applyErrorClass("answer")}
+                        name="answer"
+                        type="text"
+                        value={values.answer}
                         onChange={handleInputChange}
-                        className="form-control"
-                        name="status"
-                      >
-                        <option value="true">active</option>
-                        <option value="false">inactive</option>
-                      </select>
-                      <label htmlFor="status">Status</label>
+                      />
+                      <label htmlFor="answer">Answer</label>
                     </div>
-                  </div>
-                  <div className="form-group row floating-label">
-                    <div className="col-sm-4">
+                          </div>
+                    <div className="form-group row floating-label">
+                    <div className="col-sm-4 col-12">
                       <button type="submit" className="btn btn-primary mr-3">
                         Submit
                       </button>
@@ -203,27 +190,28 @@ export default function CategoryList(props) {
           <div className="table-responsive product-list">
             <table
               className="table table-bordered table-striped mt-3"
-              id="categoryList"
+              id="faqList"
             >
               <thead>
                 <tr>
-                  <th>Business Type</th>
-                  <th>Category Name</th>
-                  <th>Status</th>
+                <th>Subject</th>  
+                  <th>Question</th>
+                  <th>Answer</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {categoryList.map((category) => (
-                  <tr key={category.categoryId}>
-                    <td>{category.businessType.business}</td>
-                    <td>{category.categoryName}</td>
-                    <td>{category.status ? "active" : "inactive"}</td>
+                {faqList.map((f) => (
+                  <tr key={f.faqId}>
+                     <td>{f.subject.subjectName}</td>  
+                    <td>{f.question}</td>
+                     <td>{f.answer}</td>
+                   
                     <td>
                       <button
                         className="btn btn-success mr-2"
                         onClick={() => {
-                          showEditDetails(category);
+                          showEditDetails(f);
                         }}
                       >
                         <i className="fa fa-pencil" />
@@ -231,7 +219,7 @@ export default function CategoryList(props) {
                       <button
                         className="btn btn-danger"
                         onClick={(e) =>
-                          onDelete(e, parseInt(category.categoryId))
+                          onDelete(e, parseInt(f.faqId))
                         }
                       >
                         <i className="fas fa-trash" />
