@@ -70,9 +70,9 @@ export default function BusinessList(props) {
                                                 <td>{b.city}</td>
                                                 <td>{b.status ? "active" : "inactive"}</td>
                                                 <td>
-                                                    <Link to={"/businessimages/" + b.businessId} className="btn btn-theme mr-2"><i className="fa fa-image" /></Link>
-                                                    <Link to={"/businessdetails/" + b.businessId} className="btn btn-success mr-2"><i className="fa fa-pencil" /></Link>
-                                                    <button className="btn btn-danger" onClick={e => onDelete(e, parseInt(b.businessId))}><i className="fas fa-trash" /></button></td>
+                                                    <Link to={"/businessimages/" + b.businessId} className="btn btn-theme btn-sm mr-2"><i className="fa fa-image" /></Link>
+                                                    <Link to={"/businessdetails/" + b.businessId} className="btn btn-success btn-sm mr-2"><i className="fas fa-pencil-alt" /></Link>
+                                                    <button className="btn btn-danger btn-sm" onClick={e => onDelete(e, parseInt(b.businessId))}><i className="fas fa-trash-alt" /></button></td>
                                             </tr>
                                         )}
                                     </tbody>

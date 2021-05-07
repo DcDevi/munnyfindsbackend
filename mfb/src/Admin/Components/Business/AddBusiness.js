@@ -152,8 +152,10 @@ export default function AddBusiness(props) {
                     <Sidebar />
                 </div>
                 <div className="col-sm-9 col-xs-12 content pt-3 pl-0">
+                <span className="text-secondary"> Dashboard <i className="fa fa-angle-right" /> Business List </span>
                     <div className="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
-                        {/*Product Listing*/}s
+                    
+                        {/*Product Listing*/}
                         <div className="product-list">
                             <div className="row border-bottom mb-4">
                                 <div className="col-sm-8 pt-2"><h6 className="mb-4 bc-header">Add New Business</h6></div>
@@ -162,10 +164,10 @@ export default function AddBusiness(props) {
                                 </div>
                             </div>
                             <form onSubmit={handleSubmit} autoComplete="off" noValidate>
-                                <span className="text-secondary"> Dashboard <i className="fa fa-angle-right" /> Business List </span>
+                              
                                 <div className="row mt-3">
                                     <div className="col-sm-12">
-                                        <div className="mt-4 mb-3 p-3 button-container bg-white border shadow-sm">
+                                        <div className="mt-4 mb-3 p-3 button-container ">
                                             <h6 className="mb-3">Business Details</h6>
                                             <div className="form-group row floating-label">
                                                 <div className="col-sm-4 col-12">
@@ -264,7 +266,8 @@ export default function AddBusiness(props) {
                                             </div>
                                             <div className="form-group row floating-label">
                                                 <div className="col-sm-12 col-12">
-                                                    <input className={"form-control" + applyErrorClass('address')} name="address" type="text" value={values.address} onChange={handleInputChange} />
+                                                {/* <textarea className={"form-control" + applyErrorClass('address')} rows="3" width="100%"  type="text" value={values.address} onChange={handleInputChange} ></textarea> */}
+                                                 <input className={"form-control" + applyErrorClass('address')} name="address" type="text" value={values.address} onChange={handleInputChange} /> 
                                                     <label htmlFor="address">Address</label>
                                                 </div>
                                             </div>
@@ -274,26 +277,15 @@ export default function AddBusiness(props) {
                                                     <label htmlFor="googleMapURL">GoogleMap Location URL</label>
                                                 </div>
                                             </div>
-                                            <div className="form-group row floating-label">
-                                            <div className="col-sm-6 col-12">
-                                            <h6 className="mb-3">Business Image</h6>
+
                                             <div className="form-group row">
-                                                <div className="col-sm-12 col-12">
-                                                    <div className="picture-container">
-                                                        <div className="picture">
-                                                            <img src={values.imageSrc} className="picture-src" width="200px" height="200px" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="form-group row floating-label">
-                                                <div className="col-sm-12 col-12">
+                                                <div class="col-md-3">
+                                                    <label>Select Business Image</label>
+                                                    <img src={values.imageSrc} width="130px" height="130px" />
                                                     <input id="image-uploader" className={"form-control-file" + applyErrorClass('imageSrc')} type="file" accept="image/*" onChange={showPreview} />
-                                                    <label htmlFor="tag">Select Business Image</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                            </div>
+
                                             <div className="form-group row floating-label">
                                                 <div className="col-sm-4">
                                                     <button type="submit" className="btn btn-primary mr-3">Submit</button>
